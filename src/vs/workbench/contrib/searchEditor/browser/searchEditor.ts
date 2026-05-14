@@ -428,7 +428,16 @@ export class SearchEditor extends AbstractTextCodeEditor<SearchEditorViewState> 
 
 		model.pushEditOperations(this.searchResultEditor.getSelections(),
 			[...linesToDelete].map(line => ({ range: new Range(line, 1, line + 1, 1), text: '' })),
-			() => endingCursorLines.filter(isDefined).map(line => new Selection(line, 1, line, 1)));
+			() => {
+				const selections = [];
+				for(const line of endingCursorLines){
+					if(isDefined(line)){
+						selections.push(new Selection(line, 1, line, 1))
+					}
+				}
+				return selections
+			})
+			;
 	}
 
 	cleanState() {
@@ -658,7 +667,12 @@ export class SearchEditor extends AbstractTextCodeEditor<SearchEditorViewState> 
 	}
 
 	private async retrieveFileStats(searchResult: ISearchResult): Promise<void> {
-		const files = searchResult.matches().filter(f => !f.fileStat).map(f => f.resolveFileStat(this.fileService));
+		const files: Promise<void>[] = [];
+		for (const f of searchResult.matches()){
+			if(!f.fileStat){
+				files.push(f.resolveFileStat(this.fileService))
+			}
+		}
 		await Promise.all(files);
 	}
 

@@ -2700,7 +2700,12 @@ class RefreshTreeController extends Disposable {
 	}
 
 	private async retrieveFileStats(): Promise<void> {
-		const files = this.searchView.model.searchResult.matches().filter(f => !f.fileStat).map(f => f.resolveFileStat(this.fileService));
+		const files: Promise<void>[] = [];
+		for (const f of this.searchView.model.searchResult.matches()){
+			if(!f.fileStat){
+				files.push(f.resolveFileStat(this.fileService))
+			}
+		}
 		await Promise.all(files);
 	}
 

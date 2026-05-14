@@ -61,7 +61,6 @@ import { Categories } from '../../../../platform/action/common/actionCommonCateg
 import { ILocalizedString } from '../../../../platform/action/common/action.js';
 import { VSBuffer } from '../../../../base/common/buffer.js';
 import { getPathForFile } from '../../../../platform/dnd/browser/dnd.js';
-import { getFilePath } from '../../chat/common/promptSyntax/computeAutomaticInstructions.js';
 
 export const NEW_FILE_COMMAND_ID = 'explorer.newFile';
 export const NEW_FILE_LABEL = nls.localize2('newFile', "New File...");
@@ -1307,10 +1306,10 @@ async function getFilesToPaste(fileList: FileList | undefined, clipboardService:
 	if (fileList && fileList.length > 0) {
 		// with a `fileList` we support natively pasting file from disk from clipboard
 		const resources: URI[] = [];
-		for (const file of [...fileList]){
-			const filePath = getPathForFile(file)
-			if(!!filePath && isAbsolute(filePath)){
-				resources.push(URI.file(filePath!))
+		for (const file of [...fileList]) {
+			const filePath = getPathForFile(file);
+			if (!!filePath && isAbsolute(filePath)) {
+				resources.push(URI.file(filePath!));
 			}
 		}
 		if (resources.length) {

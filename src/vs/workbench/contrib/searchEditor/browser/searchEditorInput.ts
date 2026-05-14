@@ -259,16 +259,16 @@ export class SearchEditorInput extends EditorInput {
 
 	getMatchRanges(): Range[] {
 		const matchedRange: Range[] = [];
-		for (const {range, options} of (this._cachedResultsModel?.getAllDecorations() ?? [])){
+		for (const { range, options } of (this._cachedResultsModel?.getAllDecorations() ?? [])) {
 			if (
-            options.className === SearchEditorFindMatchClass &&
-            !(range.startColumn === 1 || range.endColumn === 1)
-        ) {
-            matchedRange.push(range);
-        }
+				options.className === SearchEditorFindMatchClass &&
+				!(range.startColumn === 1 || range.endColumn === 1)
+			) {
+				matchedRange.push(range);
+			}
 
 		}
-		return matchedRange
+		return matchedRange;
 	}
 
 	async setMatchRanges(ranges: Range[]) {
